@@ -14,6 +14,7 @@ NO_IDEA = "I have no idea"
 OH_DAMN = "Oh.. damn"
 
 def getAnswer(question, context):
+  print(context)
   context = json.loads(context)
   answer = ""
   request_type = ""
