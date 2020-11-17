@@ -14,8 +14,11 @@ NO_IDEA = "I have no idea"
 OH_DAMN = "Oh.. damn"
 
 def getAnswer(question, context):
-  print(context)
   context = json.loads(context)
+  try:
+    question = json.loads(question)
+  except:
+    pass
   answer = ""
   request_type = ""
   context_id = None
@@ -33,6 +36,17 @@ def getAnswer(question, context):
     answer = "No problem, I will try to find a better way of explaining."
     request_type = FETCH_PREVIOUS_LEVEL
     next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
+  elif isinstance(question, dict):
+    if "question" in question:
+      correct = context[0]["correct"]
+      if int(correct) == int(question["question"]):
+        answer = "Congratulations, your answer is correct. We'll continue"
+        next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
+        request_type = FETCH_NEXT_SESSION
+      else:
+        answer = "Your answer wasn't correct. We'll try to explain the subject again"
+        next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
+        request_type = FETCH_PREVIOUS_SESSION_AND_LEVEL_DOWN
   else:
     answer = "Couldn't process question"
     next_possible_questions = [OH_DAMN]
