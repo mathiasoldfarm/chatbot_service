@@ -38,15 +38,32 @@ def getAnswer(question, context):
     next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
   elif isinstance(question, dict):
     if "question" in question:
-      correct = context[0]["correct"]
-      if int(correct) == int(question["question"]):
-        answer = "Congratulations, your answer is correct. We'll continue"
+      corrects = []
+      context_keys = list(context.keys())
+      answered_keys = list(question["question"].keys())
+
+      assert(len(context_keys) == len(answered_keys))
+
+      for context_key, answer_key in zip(context_keys, answered_keys):
+        context_val = context[context_key]
+        answer_val = question["question"][answer_key]
+        if int(context_val) == int(answer_val):
+          corrects.append(int(answer_val))
+
+      number_of_corrects = len(corrects)
+
+      if number_of_corrects == 0:
+        answer = "You'r answers wasn't correct. But don't worry, we'll figure it out!"
+        next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
+        request_type = FETCH_PREVIOUS_SESSION_AND_LEVEL_DOWN
+      elif number_of_corrects == len(context_keys):
+        answer = "Congratulations! You got all the answers correct. We'll continue."
         next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
         request_type = FETCH_NEXT_SESSION
       else:
-        answer = "Your answer wasn't correct. We'll try to explain the subject again"
+        answer = "Not all of your answers was correct. Try to read this again and then try again"
         next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
-        request_type = FETCH_PREVIOUS_SESSION_AND_LEVEL_DOWN
+        request_type = FETCH_PREVIOUS_SESSION
   else:
     answer = "Couldn't process question"
     next_possible_questions = [OH_DAMN]
