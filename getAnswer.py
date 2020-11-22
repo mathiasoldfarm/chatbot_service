@@ -53,7 +53,7 @@ def getAnswer(question, context):
       number_of_corrects = len(corrects)
 
       if number_of_corrects == 0:
-        answer = "You'r answers wasn't correct. But don't worry, we'll figure it out!"
+        answer = "Your answers weren't correct. But don't worry, we'll figure it out!"
         next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
         request_type = FETCH_PREVIOUS_SESSION_AND_LEVEL_DOWN
       elif number_of_corrects == len(context_keys):
@@ -61,7 +61,7 @@ def getAnswer(question, context):
         next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
         request_type = FETCH_NEXT_SESSION
       else:
-        answer = "Not all of your answers was correct. Try to read this again and then try again"
+        answer = "Not all of your answers were correct. Try to read this again and then try again"
         next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
         request_type = FETCH_PREVIOUS_SESSION
   else:
