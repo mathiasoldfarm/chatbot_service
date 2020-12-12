@@ -12,13 +12,16 @@ UNDERSTAND = "I understand this"
 NOT_UNDERSTAND = "I do not understand this"
 NO_IDEA = "I have no idea"
 OH_DAMN = "Oh.. damn"
+SURE_LETS_GO = "Sure, Let's go!"
 
-def getAnswer(question, context):
+def getAnswer(question, context, history):
   context = json.loads(context)
+  history = json.loads(history)
   try:
     question = json.loads(question)
   except:
     pass
+  print(history)
   answer = ""
   request_type = ""
   context_id = None
@@ -26,10 +29,13 @@ def getAnswer(question, context):
   next_possible_questions = []
   if question == "BEGINNING":
     answer = "Hi Mathias, I will help you today with fractions"
-    next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
+    next_possible_questions = [SURE_LETS_GO]
     session_group = "NEW"
-  elif question == UNDERSTAND:
-    answer = "Perfect let's move on"
+  elif question == UNDERSTAND or question == SURE_LETS_GO:
+    if question == SURE_LETS_GO:
+      answer = 'Good, start by reading this text:'
+    else:
+      answer = "Perfect let's move on"
     request_type = FETCH_NEXT_SESSION
     next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
   elif question == NOT_UNDERSTAND:
@@ -72,5 +78,5 @@ def getAnswer(question, context):
     "request_type": request_type,
     "next_possible_questions": next_possible_questions,
     "context_id": context_id,
-    "session_group": session_group
+    "session_group_request": session_group
   }
