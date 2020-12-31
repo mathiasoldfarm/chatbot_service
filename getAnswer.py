@@ -28,7 +28,7 @@ def getAnswer(question, context, history):
   session_group = None
   next_possible_questions = []
   if question == "BEGINNING":
-    answer = "Hi Mathias, I will help you today with fractions"
+    request_type = FETCH_NEXT_SESSION
     next_possible_questions = [SURE_LETS_GO]
     session_group = "NEW"
   elif question == UNDERSTAND or question == SURE_LETS_GO:
