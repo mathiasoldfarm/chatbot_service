@@ -10,9 +10,14 @@ app.config["DEBUG"] = True
 def home():
     return "<p>Welcome to the Chatbot API</p>"
 
-@app.route('/getanswer/<string:question>/<string:context>/<string:history>', methods=['GET'])
-def get_answer(question, context, history):
-  answer = getAnswer(question, context, history)
+@app.route('/getanswer', methods=['GET'])
+def get_answer():
+  question = request.args.get("question")
+  context = request.args.get("context")
+  history = request.args.get("history")
+  request_type = request.args.get("type")
+  context_id = request.args.get("contextId")
+  answer = getAnswer(question, context, history, request_type, context_id)
   response = make_response(answer, 200)
   return response
 
