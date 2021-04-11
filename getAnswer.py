@@ -4,6 +4,8 @@ FETCH_NEXT_SESSION = 1 #"FETCH_NEXT_SESSION"
 FETCH_NEXT_SESSION_AND_LEVEL_UP = "FETCH_NEXT_SESSION_AND_LEVEL_UP"
 FETCH_NEXT_SESSION_AND_LEVEL_DOWN = "FETCH_NEXT_SESSION_AND_LEVEL_DOWN"
 FETCH_PREVIOUS_SESSION = 2#"FETCH_PREVIOUS_SESSION"
+FETCH_SESSION_BY_ID = 3
+SEARCH_FOR_CONTENT = 4
 FETCH_PREVIOUS_SESSION_AND_LEVEL_DOWN = "FETCH_PREVIOUS_SESSION_AND_LEVEL_DOWN"
 FETCH_NEXT_LEVEL = "FETCH_NEXT_LEVEL"
 FETCH_PREVIOUS_LEVEL = "FETCH_PREVIOUS_LEVEL"
@@ -65,6 +67,14 @@ def getAnswer(question, context, history, _type, contextId):
       answer = "Not all of your answers were correct. Try to read this again and then try again"
       next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
       request_type = FETCH_PREVIOUS_SESSION
+  elif _type == "section":
+    answer = "Sure, here you go:"
+    request_type = FETCH_SESSION_BY_ID
+    next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
+  elif _type == "search":
+    answer = "This is what I found:|I couldn't find any results. Try adjusting your search."
+    request_type = SEARCH_FOR_CONTENT
+    next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
   else:
     answer = "Couldn't process question"
     next_possible_questions = [OH_DAMN]
