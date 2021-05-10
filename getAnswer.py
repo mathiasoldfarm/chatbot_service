@@ -23,15 +23,16 @@ def getAnswer(question, context, history, _type, contextId):
     question = json.loads(question)
   except:
     pass
-  print(history)
   answer = ""
   request_type = None
   history_id = None
+  SetDone = True
   next_possible_questions = []
   if question == "BEGINNING":
     request_type = FETCH_NEXT_SESSION
     next_possible_questions = [SURE_LETS_GO]
     history_id = "NEW"
+    SetDone = False
   elif question == UNDERSTAND or question == SURE_LETS_GO:
     if question == SURE_LETS_GO:
       answer = 'Good, start by reading this text:'
@@ -59,6 +60,7 @@ def getAnswer(question, context, history, _type, contextId):
       answer = "Your answers weren't correct. But don't worry, we'll figure it out!"
       next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
       request_type = FETCH_PREVIOUS_SESSION #FETCH_PREVIOUS_SESSION_AND_LEVEL_DOWN
+      SetDone = False
     elif number_of_corrects == len(question_ids):
       answer = "Congratulations! You got all the answers correct. We'll continue."
       next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
@@ -67,6 +69,7 @@ def getAnswer(question, context, history, _type, contextId):
       answer = "Not all of your answers were correct. Try to read this again and then try again"
       next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
       request_type = FETCH_PREVIOUS_SESSION
+      SetDone = False
   elif _type == "section":
     answer = "Sure, here you go:"
     request_type = FETCH_SESSION_BY_ID
@@ -83,5 +86,6 @@ def getAnswer(question, context, history, _type, contextId):
     "Type": request_type,
     "NextPossibleAnswers": next_possible_questions,
     "NextContextId": int(contextId) + 1,
-    "GetNewHistory": history_id == "NEW"
+    "GetNewHistory": history_id == "NEW",
+    "SetDone": SetDone
   }
