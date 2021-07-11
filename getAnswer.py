@@ -1,5 +1,6 @@
 import json
 
+NO_TYPE = 0
 FETCH_NEXT_SESSION = 1 #"FETCH_NEXT_SESSION"
 FETCH_NEXT_SESSION_AND_LEVEL_UP = "FETCH_NEXT_SESSION_AND_LEVEL_UP"
 FETCH_NEXT_SESSION_AND_LEVEL_DOWN = "FETCH_NEXT_SESSION_AND_LEVEL_DOWN"
@@ -81,6 +82,7 @@ def getAnswer(question, context, history, _type, contextId):
   else:
     answer = "Couldn't process question"
     next_possible_questions = [OH_DAMN]
+    request_type = NO_TYPE
   return {
     "Answer": answer,
     "Type": request_type,
