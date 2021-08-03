@@ -11,11 +11,11 @@ FETCH_PREVIOUS_SESSION_AND_LEVEL_DOWN = "FETCH_PREVIOUS_SESSION_AND_LEVEL_DOWN"
 FETCH_NEXT_LEVEL = "FETCH_NEXT_LEVEL"
 FETCH_PREVIOUS_LEVEL = "FETCH_PREVIOUS_LEVEL"
 
-UNDERSTAND = "I understand this"
-NOT_UNDERSTAND = "I do not understand this"
+UNDERSTAND = "Jeg forstår"
+NOT_UNDERSTAND = "Jeg forstår ikke"
 NO_IDEA = "I have no idea"
 OH_DAMN = "Oh.. damn"
-SURE_LETS_GO = "Sure, Let's go!"
+SURE_LETS_GO = "Helt sikkert, lad os dykke ned i det!"
 
 def getAnswer(question, context, history, _type, contextId):
   context = json.loads(context)
@@ -36,9 +36,9 @@ def getAnswer(question, context, history, _type, contextId):
     SetDone = False
   elif question == UNDERSTAND or question == SURE_LETS_GO:
     if question == SURE_LETS_GO:
-      answer = 'Good, start by reading this text:'
+      answer = 'Godt, start med at læse dette'
     else:
-      answer = "Perfect let's move on"
+      answer = "Super godt, vi fortsætter"
     request_type = FETCH_NEXT_SESSION
     next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
   elif question == NOT_UNDERSTAND:
@@ -58,21 +58,21 @@ def getAnswer(question, context, history, _type, contextId):
     number_of_corrects = len(corrects)
 
     if number_of_corrects == 0:
-      answer = "Your answers weren't correct. But don't worry, we'll figure it out!"
+      answer = "Dine svar var ikke korrekte, men fortvivl ej. Vi finder ud af det!"
       next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
       request_type = FETCH_PREVIOUS_SESSION #FETCH_PREVIOUS_SESSION_AND_LEVEL_DOWN
       SetDone = False
     elif number_of_corrects == len(question_ids):
-      answer = "Congratulations! You got all the answers correct. We'll continue."
+      answer = "Tillykke! Alle dine svar var rigtige. Vi fortsætter."
       next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
       request_type = FETCH_NEXT_SESSION
     else:
-      answer = "Not all of your answers were correct. Try to read this again and then try again"
+      answer = "Ikke alle dine svar var rigtige, men vi får styr på det."
       next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
       request_type = FETCH_PREVIOUS_SESSION
       SetDone = False
   elif _type == "section":
-    answer = "Sure, here you go:"
+    answer = "Den får du her:"
     request_type = FETCH_SESSION_BY_ID
     next_possible_questions = [UNDERSTAND, NOT_UNDERSTAND]
   elif _type == "search":
