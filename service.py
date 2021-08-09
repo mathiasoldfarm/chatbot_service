@@ -1,10 +1,12 @@
 import flask
 from flask import request
 from flask import make_response
-from getAnswer import getAnswer
+from Responder import Responder
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
+
+responder = Responder()
 
 @app.route('/', methods=['GET'])
 def home():
@@ -17,7 +19,7 @@ def get_answer():
   history = request.args.get("history")
   request_type = request.args.get("type")
   context_id = request.args.get("contextId")
-  answer = getAnswer(question, context, history, request_type, context_id)
+  answer = responder.get_answer(question, context, history, request_type, context_id)
   response = make_response(answer, 200)
   return response
 
